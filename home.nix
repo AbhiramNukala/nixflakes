@@ -1,9 +1,4 @@
-{
-  config,
-  inputs,
-  pkgs,
-  ...
-}:
+{ inputs, system, config, pkgs, ... }:
 {
   imports = [
     ./config
@@ -91,11 +86,29 @@
     enableZshIntegration = true;
   };
 
+  xdg.desktopEntries.android-studio = {
+    name = "Android Studio";
+    genericName = "Integrated Development Environment";
+    comment = "Android Studio (projects devenv)";
+    exec = "direnv exec ${config.home.homeDirectory}/projects android-studio %U";
+    icon = "android-studio";
+    terminal = false;
+    categories = [ "Development" "IDE" ];
+    mimeType = [ "application/x-studio-project" ];
+    settings = {
+      StartupWMClass = "jetbrains-studio";
+    };
+  };
+
   home.packages = with pkgs; [
     (pkgs.writeShellScriptBin "jrun" (builtins.readFile ./customScripts/java-run.sh))
+    (pkgs.writeShellScriptBin "android-studio" ''
+      exec direnv exec "${config.home.homeDirectory}/projects" android-studio "$@"
+    '')
     openssh
     mpc
     rmpc
+    inputs.llm-agents.packages.${system}.hermes-agent
   ];
 
 }

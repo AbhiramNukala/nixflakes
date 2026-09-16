@@ -19,7 +19,10 @@
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hermes-agent.url = "github:NousResearch/hermes-agent";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -49,7 +52,6 @@
             { nixpkgs.hostPlatform = system; }
 
             inputs.sops-nix.nixosModules.sops
-            inputs.hermes-agent.nixosModules.default
             inputs.home-manager.nixosModules.home-manager
             {
               home-manager = {

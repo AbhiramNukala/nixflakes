@@ -8,7 +8,7 @@
     ./waybar
     ./spicetify
     # ./rofi
-    # ./zathura
+    ./zathura
     ./dunst
     ./hyprlock
     # ./wlogout

@@ -48,18 +48,24 @@
       };
 
       decoration = {
-        rounding = 0;
-        # active_opacity = 1.0;
-        # inactive_opacity = 1.0;
+        rounding = 12;
+        rounding_power = 2.5;
+        active_opacity = 1.0;
+        inactive_opacity = 0.92;
+        dim_inactive = true;
+        dim_strength = 0.12;
         # drop_shadow = true;
         # shadow_range = 5;
         # shadow_render_power = 6;
         # "col.shadow" = "rgb(${config.colorScheme.palette.base0B})";
         blur = {
           enabled = true;
-          size = 6;
-          passes = 2;
+          size = 8;
+          passes = 3;
           vibrancy = 0.1696;
+          new_optimizations = true;
+          ignore_opacity = true;
+          popups = true;
         };
       };
 
@@ -79,9 +85,16 @@
           "easeOutExpo,0.16,1,0.3,1"
         ];
         animation = [
-          "windows,1,3,md3_decel,popin 60%"
+          "windowsIn,1,3,md3_decel,popin 60%"
+          "windowsOut,1,2.5,md3_accel,popin 80%"
+          "windowsMove,1,4,fluent_decel"
+          "layersIn,1,3,md3_decel,slide"
+          "layersOut,1,2.5,md3_accel,slide"
+          "fadeIn,1,3,md3_decel"
+          "fadeOut,1,2.5,md3_accel"
+          "fadeDim,1,4,default"
           "border,1,10,default"
-          "fade,1,2.5,md3_decel"
+          "borderangle,1,8,linear,once"
           "workspaces,1,3.5,easeOutExpo,slide"
           "specialWorkspace,1,3,md3_decel,slidevert"
         ];

@@ -15,7 +15,6 @@
     ./config/nix
     ./hardware-configuration.nix
   ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -116,6 +115,13 @@
   programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Enables gabbar's systemd --user instance to start at boot, without a
+  # login session — required for user-level services (e.g. hermes-gateway)
+  # to run headless/on boot. Equivalent to `loginctl enable-linger gabbar`.
+  systemd.tmpfiles.rules = [
+    "f /var/lib/systemd/linger/gabbar 0644 root root -"
+  ];
+
   users.users.gabbar = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -126,6 +132,7 @@
       "adbusers"
       "kvm"
       "libvirtd"
+      "hermes"
     ];
     packages = with pkgs; [
       vesktop
@@ -164,9 +171,6 @@
       zip
       unzip
 
-      # git-filter-repo
-      # google-chrome
-
       qbittorrent
 
       dnsmasq
@@ -186,6 +190,12 @@
       jetbrains.idea
       obs-studio
       kdePackages.kdenlive
+
+      google-chrome
+
+      telegram-desktop
+      pnpm
+      imagemagick
     ];
   };
 
@@ -290,32 +300,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-
-
-  # ── Hermes Agent ──────────────────────────────────────────────────────
-  # Docs: https://hermes-agent.nousresearch.com/docs/getting-started/nix-setup
-  services.hermes-agent = {
-    enable = true;
-
-    settings = {
-      # OpenRouter (default provider) — DeepSeek V4 Flash 0731
-      model.default = "deepseek/deepseek-v4-flash-0731";
-      toolsets = [ "all" ];
-    };
-
-    # Simplest secrets setup: a plain root-owned, non-world-readable env file.
-    # Create it once with:
-    #   echo "OPENROUTER_API_KEY=sk-or-your-key" | sudo install -m 0600 -o hermes /dev/stdin /var/lib/hermes/env
-    #
-    # If/when you wire up sops-nix (you already import its module in flake.nix),
-    # swap this line for:
-    #   environmentFiles = [ config.sops.secrets."hermes-env".path ];
-    # and add a `sops.secrets."hermes-env" = { format = "yaml"; };` block plus
-    # a secrets/hermes.yaml file containing `hermes-env: | OPENROUTER_API_KEY=sk-or-...`
-    environmentFiles = [ "/var/lib/hermes/env" ];
-
-    # Puts `hermes` on your PATH and shares state between the CLI and the
-    # gateway service (so `hermes chat` uses the same sessions/memory).
-    addToSystemPackages = true;
-  };
 }
