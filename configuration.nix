@@ -72,11 +72,11 @@
   # environment.cosmic.excludePackages = with pkgs; [
   #   cosmic-edit
   # ];
-  services.emacs = {
-    enable = true;
-    defaultEditor = true;
-    package = pkgs.emacs-pgtk;
-  };
+  # services.emacs = {
+  #   enable = true;
+  #   defaultEditor = true;
+  #   package = pkgs.emacs-pgtk;
+  # };
 
   programs.hyprland = {
     enable = true;
@@ -189,13 +189,14 @@
       localsend
       jetbrains.idea
       obs-studio
-      kdePackages.kdenlive
+      # kdePackages.kdenlive
 
       google-chrome
 
       telegram-desktop
       pnpm
       imagemagick
+      # firefox
     ];
   };
 
@@ -205,6 +206,8 @@
     # android_sdk.accept_license = true;
   };
 
+  programs.kdeconnect.enable = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -212,20 +215,20 @@
     #  wget
   ];
 
-  virtualisation.libvirtd = {
-    enable = true;
-
-    qemu = {
-      package = pkgs.qemu_kvm;
-      runAsRoot = true;
-
-      # 🔥 THIS helps with graphics acceleration
-      swtpm.enable = true;
-    };
-  };
-  programs.virt-manager.enable = true;
-  services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true;
+#   virtualisation.libvirtd = {
+#     enable = true;
+#
+#     qemu = {
+#       package = pkgs.qemu_kvm;
+#       runAsRoot = true;
+#
+#       # 🔥 THIS helps with graphics acceleration
+#       swtpm.enable = true;
+#     };
+#   };
+  # programs.virt-manager.enable = true;
+  # services.qemuGuest.enable = true;
+  # services.spice-vdagentd.enable = true;
 
   hardware.graphics = {
     enable = true;

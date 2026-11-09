@@ -10,6 +10,7 @@
     # ./rofi
     ./zathura
     ./dunst
+    ./hypridle
     ./hyprlock
     # ./wlogout
     ./fastfetch

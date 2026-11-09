@@ -6,7 +6,8 @@
     xwayland.enable = true;
     configType = "hyprlang";
     package = pkgs.hyprland;
-    # systemdIntegration = true;
+    # Uncomment if you use UWSM / start Hyprland from a display manager:
+    # systemd.enable = false;
     settings = {
       # Monitors
       monitor = "HDMI-A-2,1920x1080@60,0x0,1";
@@ -54,10 +55,13 @@
         inactive_opacity = 0.92;
         dim_inactive = true;
         dim_strength = 0.12;
-        # drop_shadow = true;
-        # shadow_range = 5;
-        # shadow_render_power = 6;
-        # "col.shadow" = "rgb(${config.colorScheme.palette.base0B})";
+        # Shadows now live in a subcategory (old drop_shadow/shadow_range keys are gone):
+        # shadow = {
+        #   enabled = true;
+        #   range = 5;
+        #   render_power = 3;
+        #   color = "rgb(${config.colorScheme.palette.base0B})";
+        # };
         blur = {
           enabled = true;
           size = 8;
@@ -124,10 +128,6 @@
         };
       };
 
-      # gestures = {
-      #   workspace_swipe = false;
-      # };
-
       device = [
         {
           name = "epic-mouse-v1";
@@ -149,13 +149,12 @@
         "$mainMod ALT, V, exec, clipman clear --all"
         "$mainMod, R, exec, $menu"
         "$mainMod, P, pseudo,"
-        # "$mainMod, J, togglesplit,"
+        "$mainMod, J, layoutmsg, togglesplit"
         "$mainMod, PRINT, exec, hyprshot -m window"
         ", PRINT, exec, hyprshot -m output"
         "$mainMod SHIFT, PRINT, exec, hyprshot -m region --clipboard-only"
         "$mainMod, SPACE, exec, ${config.home.homeDirectory}/flakes/config/hyprland/wall.sh"
         "$mainMod, L, exec, hyprlock"
-        # "$mainMod SHIFT, V,exec, pypr toggle term"
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up, movefocus, u"
@@ -209,11 +208,11 @@
         "$mainMod, mouse:273, resizewindow"
       ];
 
-      # Window Rules
-      # windowrulev2 = [
-      #   "suppressevent maximize, class:.*"
-      #   "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
-      # ];
+      # Window Rules (Hyprland >= 0.53 syntax: match:props first, then effects)
+      windowrule = [
+        "match:class .*, suppress_event maximize"
+        "match:class ^$, match:title ^$, match:xwayland true, match:float true, match:fullscreen false, match:pin false, no_focus on"
+      ];
     };
   };
 }

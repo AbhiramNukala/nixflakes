@@ -55,6 +55,7 @@
   };
 
   home.pointerCursor = {
+    enable = true;
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Ice";
     size = 24;
@@ -108,7 +109,7 @@
     openssh
     mpc
     rmpc
-    inputs.llm-agents.packages.${system}.hermes-agent
+    # inputs.llm-agents.packages.${system}.hermes-agent
   ];
 
 }
